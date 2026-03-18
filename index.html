@@ -654,13 +654,28 @@ function collectData() {
   };
 }
 
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyBlRPrxGIUgi-L5B4xU1nyvLBzldcbD3ZhvL2_txWz6rtF-EXOH_PxnMAsYE1KDIQ21w/exec';
+
 async function submitForm() {
   const data = collectData();
-  const ok = await saveResponse(data);
+  
+  // Show thanks immediately, send in background
   showView('view-thanks');
   document.getElementById('progress-fill').style.width = '100%';
   document.getElementById('progress-label').textContent = '✓ Enviado';
   document.getElementById('section-nav').style.display = 'none';
+
+  // Save locally as backup
+  await saveResponse(data);
+
+  // Send to Google Sheets via URL params (avoids CORS)
+  try {
+    const params = encodeURIComponent(JSON.stringify(data));
+    const img = new Image();
+    img.src = SHEETS_URL + '?data=' + params;
+  } catch(e) {
+    console.warn('Error sending to Sheets:', e);
+  }
 }
 
 // ── VIEWS ──
