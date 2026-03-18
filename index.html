@@ -569,11 +569,22 @@ let allResponses = [];
 
 // ── STORAGE ──
 async function saveResponse(data) {
+  const scriptURL = 'PEGÁ_ACÁ_TU_URL_DE_EXEC_DE_GOOGLE';
   try {
+    // Esto envía los datos al Excel en la nube
+    fetch(scriptURL, { 
+      method: 'POST', 
+      mode: 'no-cors', 
+      body: new URLSearchParams(data) 
+    });
+
+    // Mantenemos el guardado local que ya tenías por si falla internet
     const id = 'resp:' + Date.now() + ':' + Math.random().toString(36).slice(2,7);
     await window.storage.set(id, JSON.stringify(data), true);
     return true;
-  } catch(e) { return false; }
+  } catch (e) {
+    return false;
+  }
 }
 
 async function loadAllResponses() {
