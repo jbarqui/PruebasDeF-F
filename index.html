@@ -571,36 +571,24 @@ let allResponses = [];
 
 // ── STORAGE ──
 async function saveResponse(data) {
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbyFcnReRpRihfRlYAlAAi8Jp-O5fytmK_JGy3BuXNPxqPuqmFIlbigd0JWHtTNAYC_7/exec';
   try {
-    // Esto envía los datos al Excel en la nube
-    fetch(scriptURL, { 
-      method: 'POST', 
-      mode: 'no-cors', 
-      body: new URLSearchParams(data) 
-    });
-
-    // Mantenemos el guardado local que ya tenías por si falla internet
     const id = 'resp:' + Date.now() + ':' + Math.random().toString(36).slice(2,7);
-    await window.storage.set(id, JSON.stringify(data), true);
-alert('¡Prueba enviada con éxito! Podés realizar otro test ahora.');
-        window.location.href = window.location.pathname; // Esto limpia la URL y recarga
-        return true;
-    } catch (e) {
-        return false;
-    }
-  }
+    localStorage.setItem(id, JSON.stringify(data));
+    return true;
+  } catch(e) { return false; }
 }
 
 async function loadAllResponses() {
   try {
-    const keys = await window.storage.list('resp:', true);
     const responses = [];
-    for (const key of keys.keys) {
-      try {
-        const r = await window.storage.get(key, true);
-        if (r) responses.push(JSON.parse(r.value));
-      } catch(e) {}
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('resp:')) {
+        try {
+          const val = localStorage.getItem(key);
+          if (val) responses.push(JSON.parse(val));
+        } catch(e) {}
+      }
     }
     responses.sort((a,b) => (b.timestamp||0)-(a.timestamp||0));
     return responses;
