@@ -581,9 +581,12 @@ async function saveResponse(data) {
     // Mantenemos el guardado local que ya tenías por si falla internet
     const id = 'resp:' + Date.now() + ':' + Math.random().toString(36).slice(2,7);
     await window.storage.set(id, JSON.stringify(data), true);
-    return true;
-  } catch (e) {
-    return false;
+alert('¡Prueba enviada con éxito! Podés realizar otro test ahora.');
+        window.location.href = window.location.pathname; // Esto limpia la URL y recarga
+        return true;
+    } catch (e) {
+        return false;
+    }
   }
 }
 
@@ -844,7 +847,11 @@ document.querySelectorAll('.option-item input').forEach(input => {
   });
 });
 
-// ── ADMIN ACCESS via URL hash ──
+// --- QUITAR OBLIGATORIEDAD ---
+document.querySelectorAll('[required]').forEach(el => el.removeAttribute('required'));
+document.querySelectorAll('.required-dot').forEach(el => el.style.display = 'none');
+
+// -- ADMIN ACCESS via URL hash --
 if (window.location.hash === '#admin') showView('view-admin-login');
 </script>
 </body>
