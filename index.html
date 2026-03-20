@@ -180,7 +180,6 @@ textarea { min-height: 80px; }
   <h1>Pruebas de Usabilidad — App SUBE</h1>
   <p>Completá este formulario mientras explorás la app. No hay respuestas correctas ni incorrectas.</p>
   <div class="chips">
-    <span class="chip">17 tareas</span>
     <span class="chip">App SUBE v3.x</span>
   </div>
 </div>
@@ -210,7 +209,7 @@ textarea { min-height: 80px; }
       <label class="option-item"><input type="radio" name="frecuencia" value="Casi nunca"><span>Casi nunca</span></label>
     </div>
   </div>
-  <div class="question"><label>¿Usaste la App SUBE antes de esta sesión? <span class="req">*</span></label>
+  <div class="question"><label>¿Usaste la app antes? <span class="req">*</span></label>
     <div class="options">
       <label class="option-item"><input type="radio" name="experiencia" value="No, es la primera vez"><span>No, es la primera vez</span></label>
       <label class="option-item"><input type="radio" name="experiencia" value="La usé pocas veces"><span>La usé pocas veces</span></label>
@@ -239,7 +238,12 @@ textarea { min-height: 80px; }
   <div class="question"><label>¿Qué tan clara te resultó la pantalla principal? <span class="req">*</span><span class="hint">1 = muy confusa · 5 = muy clara</span></label>
     <div class="scale-wrap" id="scale-m1b"><button class="scale-btn" onclick="setScale('m1b',1)" data-v="1">1</button><button class="scale-btn" onclick="setScale('m1b',2)" data-v="2">2</button><button class="scale-btn" onclick="setScale('m1b',3)" data-v="3">3</button><button class="scale-btn" onclick="setScale('m1b',4)" data-v="4">4</button><button class="scale-btn" onclick="setScale('m1b',5)" data-v="5">5</button></div>
   </div>
-  <div class="question"><label>¿Algo confuso en la pantalla principal? <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-m1c" placeholder="Si no hubo nada, dejalo vacío..."></textarea></div>
+  <div class="question"><label>¿Algo confuso en la pantalla principal? <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-m1c" placeholder=""></textarea>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);">
+      <label style="font-size:13px;color:var(--muted);font-weight:400;display:block;margin-bottom:6px;">Adjuntar captura o video (opcional)</label>
+      <input type="file" id="file-q-m1c" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
+    </div>
+  </div>
 
   <div class="task-box" style="border-color:#1565C0;background:#EEF4FF;"><div class="task-label" style="color:#1565C0;">Tarea 2</div><div class="task-title">Filtrar el mapa por tipo de transporte</div><div class="task-desc">Seleccioná solo "Subte" y verificá que el mapa cambie. Probá combinar más de un tipo.</div></div>
   <div class="question"><label>¿El mapa cambió visiblemente al filtrar? <span class="req">*</span></label>
@@ -250,7 +254,12 @@ textarea { min-height: 80px; }
       <label class="option-item"><input type="radio" name="m2a" value="No lo intenté"><span>No lo intenté</span></label>
     </div>
   </div>
-  <div class="question"><label>Notas sobre el filtro del mapa <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-m2b"></textarea></div>
+  <div class="question"><label>Notas sobre el filtro del mapa <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-m2b" placeholder=""></textarea>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);">
+      <label style="font-size:13px;color:var(--muted);font-weight:400;display:block;margin-bottom:6px;">Adjuntar captura o video (opcional)</label>
+      <input type="file" id="file-q-m2b" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
+    </div>
+  </div>
 
 
 <div class="nav-row"><button class="btn btn-back" onclick="goTo(0)">« Atrás</button><button class="btn btn-next" onclick="goTo(2)">Siguiente »</button></div>
@@ -273,7 +282,12 @@ textarea { min-height: 80px; }
   <div class="question"><label>¿Qué tan fácil fue encontrar "Guardar lugar"? <span class="req">*</span><span class="hint">1 = muy difícil · 5 = muy fácil</span></label>
     <div class="scale-wrap" id="scale-m3b"><button class="scale-btn" onclick="setScale('m3b',1)" data-v="1">1</button><button class="scale-btn" onclick="setScale('m3b',2)" data-v="2">2</button><button class="scale-btn" onclick="setScale('m3b',3)" data-v="3">3</button><button class="scale-btn" onclick="setScale('m3b',4)" data-v="4">4</button><button class="scale-btn" onclick="setScale('m3b',5)" data-v="5">5</button></div>
   </div>
-  <div class="question"><label>Notas sobre lugares favoritos <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-m3c"></textarea></div>
+  <div class="question"><label>Notas sobre lugares favoritos <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-m3c" placeholder=""></textarea>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);">
+      <label style="font-size:13px;color:var(--muted);font-weight:400;display:block;margin-bottom:6px;">Adjuntar captura o video (opcional)</label>
+      <input type="file" id="file-q-m3c" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
+    </div>
+  </div>
 
   
   <div class="task-box" style="border-color:#2E7D32;background:#F0FAF0;"><div class="task-label" style="color:#2E7D32;">Tarea 4</div><div class="task-title">Buscar cómo llegar a un destino</div><div class="task-desc">Ingresá "Obelisco" como destino y revisá las opciones de viaje.</div></div>
@@ -292,7 +306,12 @@ textarea { min-height: 80px; }
       <label class="option-item"><input type="radio" name="v1b" value="No cargaron"><span>No cargaron</span></label>
     </div>
   </div>
-  <div class="question"><label>Notas sobre la búsqueda de destino <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-v1c"></textarea></div>
+  <div class="question"><label>Notas sobre la búsqueda de destino <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-v1c" placeholder=""></textarea>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);">
+      <label style="font-size:13px;color:var(--muted);font-weight:400;display:block;margin-bottom:6px;">Adjuntar captura o video (opcional)</label>
+      <input type="file" id="file-q-v1c" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
+    </div>
+  </div>
 
   <div class="task-box" style="border-color:#2E7D32;background:#F0FAF0;"><div class="task-label" style="color:#2E7D32;">Tarea 5</div><div class="task-title">Aplicar preferencias de viaje</div><div class="task-desc">Con un destino buscado, encontrá las preferencias y ajustalas para minimizar transbordos.</div></div>
   <div class="question"><label>¿Encontraste las preferencias de viaje? <span class="req">*</span></label>
@@ -315,7 +334,12 @@ textarea { min-height: 80px; }
   <div class="question"><label>¿Qué tan útil fue la información durante la navegación? <span class="req">*</span><span class="hint">1 = nada útil · 5 = muy útil</span></label>
     <div class="scale-wrap" id="scale-v3a"><button class="scale-btn" onclick="setScale('v3a',1)" data-v="1">1</button><button class="scale-btn" onclick="setScale('v3a',2)" data-v="2">2</button><button class="scale-btn" onclick="setScale('v3a',3)" data-v="3">3</button><button class="scale-btn" onclick="setScale('v3a',4)" data-v="4">4</button><button class="scale-btn" onclick="setScale('v3a',5)" data-v="5">5</button></div>
   </div>
-  <div class="question"><label>Notas sobre la navegación <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-v3b"></textarea></div>
+  <div class="question"><label>Notas sobre la navegación <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-v3b" placeholder=""></textarea>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);">
+      <label style="font-size:13px;color:var(--muted);font-weight:400;display:block;margin-bottom:6px;">Adjuntar captura o video (opcional)</label>
+      <input type="file" id="file-q-v3b" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
+    </div>
+  </div>
 
   <div class="task-box" style="border-color:#2E7D32;background:#F0FAF0;"><div class="task-label" style="color:#2E7D32;">Tarea 7</div><div class="task-title">Compartir tu ubicación</div><div class="task-desc">Buscá la opción de compartir ubicación y usala como si le mandaras tu posición a un familiar.</div></div>
   <div class="question"><label>¿Pudiste compartir tu ubicación? <span class="req">*</span></label>
@@ -384,13 +408,23 @@ textarea { min-height: 80px; }
       <label class="option-item"><input type="radio" name="b4a" value="No pude completarla"><span>No pude completarla</span></label>
     </div>
   </div>
-  <div class="question"><label>¿Qué parte fue más difícil? <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-b4b" placeholder="Ej: ingresar el alias, elegir motivo..."></textarea></div>
+  <div class="question"><label>¿Qué parte fue más difícil? <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-b4b" placeholder=""></textarea>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);">
+      <label style="font-size:13px;color:var(--muted);font-weight:400;display:block;margin-bottom:6px;">Adjuntar captura o video (opcional)</label>
+      <input type="file" id="file-q-b4b" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
+    </div>
+  </div>
 
   <div class="task-box" style="border-color:#E65100;background:#FFF3EE;"><div class="task-label" style="color:#E65100;">Tarea 12</div><div class="task-title">Revisar y filtrar movimientos</div><div class="task-desc">Encontrá el historial y aplicá el filtro "Transporte" + "Último mes".</div></div>
   <div class="question"><label>¿Los filtros de movimientos fueron intuitivos? <span class="req">*</span><span class="hint">1 = nada intuitivos · 5 = muy intuitivos</span></label>
     <div class="scale-wrap" id="scale-b5a"><button class="scale-btn" onclick="setScale('b5a',1)" data-v="1">1</button><button class="scale-btn" onclick="setScale('b5a',2)" data-v="2">2</button><button class="scale-btn" onclick="setScale('b5a',3)" data-v="3">3</button><button class="scale-btn" onclick="setScale('b5a',4)" data-v="4">4</button><button class="scale-btn" onclick="setScale('b5a',5)" data-v="5">5</button></div>
   </div>
-  <div class="question"><label>Notas sobre movimientos y filtros <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-b5b"></textarea></div>
+  <div class="question"><label>Notas sobre movimientos y filtros <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-b5b" placeholder=""></textarea>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);">
+      <label style="font-size:13px;color:var(--muted);font-weight:400;display:block;margin-bottom:6px;">Adjuntar captura o video (opcional)</label>
+      <input type="file" id="file-q-b5b" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
+    </div>
+  </div>
 
   <div class="nav-row"><button class="btn btn-back" onclick="goTo(2)">← Atrás</button><button class="btn btn-next" onclick="goTo(4)">Siguiente →</button></div>
 </div>
@@ -415,7 +449,12 @@ textarea { min-height: 80px; }
       <label class="option-item"><input type="radio" name="p1b" value="No me quedó claro"><span>No me quedó claro</span></label>
     </div>
   </div>
-  <div class="question"><label>Notas sobre pagar con QR <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-p1c"></textarea></div>
+  <div class="question"><label>Notas sobre pagar con QR <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-p1c" placeholder=""></textarea>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);">
+      <label style="font-size:13px;color:var(--muted);font-weight:400;display:block;margin-bottom:6px;">Adjuntar captura o video (opcional)</label>
+      <input type="file" id="file-q-p1c" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
+    </div>
+  </div>
 
   <div class="task-box" style="border-color:#AD1457;background:#FFF0F5;"><div class="task-label" style="color:#AD1457;">Tarea 14</div><div class="task-title">Generar un VQR para el colectivo</div><div class="task-desc">Pagar → "Viajar con VQR" → generá el código y observá el temporizador.</div></div>
   <div class="question"><label>¿Las condiciones previas para el VQR fueron claras? <span class="req">*</span></label>
@@ -467,7 +506,12 @@ textarea { min-height: 80px; }
       <label class="option-item"><input type="radio" name="mo1b" value="No lo intenté"><span>No lo intenté</span></label>
     </div>
   </div>
-  <div class="question"><label>Notas sobre el onboarding de MODO <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-mo1c"></textarea></div>
+  <div class="question"><label>Notas sobre el onboarding de MODO <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-mo1c" placeholder=""></textarea>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);">
+      <label style="font-size:13px;color:var(--muted);font-weight:400;display:block;margin-bottom:6px;">Adjuntar captura o video (opcional)</label>
+      <input type="file" id="file-q-mo1c" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
+    </div>
+  </div>
 
   <div class="task-box" style="border-color:#4527A0;background:#F3F0FF;"><div class="task-label" style="color:#4527A0;">Tarea 17</div><div class="task-title">Explorar MODO+ y la Actividad</div><div class="task-desc">Más → MODO+ → revisá los beneficios. Luego revisá "Actividad" y probá un filtro.</div></div>
   <div class="question"><label>¿Entendiste la diferencia entre "Actividad MODO" y "Movimientos Billetera"? <span class="req">*</span></label>
@@ -477,7 +521,12 @@ textarea { min-height: 80px; }
       <label class="option-item"><input type="radio" name="mo2a" value="No, me pareció que mostraban lo mismo"><span>No, me pareció que mostraban lo mismo</span></label>
     </div>
   </div>
-  <div class="question"><label>Notas sobre MODO+ o Actividad <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-mo2b"></textarea></div>
+  <div class="question"><label>Notas sobre MODO+ o Actividad <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-mo2b" placeholder=""></textarea>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);">
+      <label style="font-size:13px;color:var(--muted);font-weight:400;display:block;margin-bottom:6px;">Adjuntar captura o video (opcional)</label>
+      <input type="file" id="file-q-mo2b" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
+    </div>
+  </div>
 
   <div class="nav-row"><button class="btn btn-back" onclick="goTo(4)">← Atrás</button><button class="btn btn-next" onclick="goTo(6)">Siguiente →</button></div>
 </div>
@@ -489,11 +538,21 @@ textarea { min-height: 80px; }
   <div class="question"><label>¿Cuál fue la funcionalidad más fácil? <span class="req">*</span></label><input type="text" id="q-c1" placeholder="Ej: planificar el viaje, ver movimientos..."></div>
   <div class="question"><label>¿Cuál fue la funcionalidad más difícil o confusa? <span class="req">*</span></label><input type="text" id="q-c2" placeholder="Ej: el onboarding de MODO, el bloqueo de tarjeta..."></div>
   <div class="question"><label>¿Encontraste algún error o comportamiento inesperado? <span class="req">*</span><span class="hint">Si no encontraste nada, escribí "Sin errores"</span></label><textarea id="q-c3" placeholder="Describí el error y en qué pantalla ocurrió..."></textarea></div>
-  <div class="question"><label>¿Hay alguna función que esperabas y no encontraste? <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-c4"></textarea></div>
+  <div class="question"><label>¿Hay alguna función que esperabas y no encontraste? <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-c4" placeholder=""></textarea>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);">
+      <label style="font-size:13px;color:var(--muted);font-weight:400;display:block;margin-bottom:6px;">Adjuntar captura o video (opcional)</label>
+      <input type="file" id="file-q-c4" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
+    </div>
+  </div>
   <div class="question"><label>Puntuación general de la experiencia <span class="req">*</span><span class="hint">1 = muy mala · 5 = excelente</span></label>
     <div class="scale-wrap" id="scale-c5"><button class="scale-btn" onclick="setScale('c5',1)" data-v="1">1</button><button class="scale-btn" onclick="setScale('c5',2)" data-v="2">2</button><button class="scale-btn" onclick="setScale('c5',3)" data-v="3">3</button><button class="scale-btn" onclick="setScale('c5',4)" data-v="4">4</button><button class="scale-btn" onclick="setScale('c5',5)" data-v="5">5</button></div>
   </div>
-  <div class="question"><label>Comentario libre <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-c6" placeholder="Cualquier cosa que quieras agregar..."></textarea></div>
+  <div class="question"><label>Comentario libre <span style="color:var(--muted);font-weight:400">(opcional)</span></label><textarea id="q-c6" placeholder=""></textarea>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);">
+      <label style="font-size:13px;color:var(--muted);font-weight:400;display:block;margin-bottom:6px;">Adjuntar captura o video (opcional)</label>
+      <input type="file" id="file-q-c6" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
+    </div>
+  </div>
   <div class="nav-row"><button class="btn btn-back" onclick="goTo(5)">← Atrás</button><button class="btn btn-submit" onclick="submitForm()">Enviar respuestas ✓</button></div>
 </div>
 
@@ -535,7 +594,7 @@ textarea { min-height: 80px; }
     <div class="admin-stats">
       <div class="admin-stat"><div class="n" id="stat-total">0</div><div class="l">respuestas</div></div>
     </div>
-    <button class="logout-btn" onclick="adminLogout()">Salir</button>
+    <button class="logout-btn" onclick="clearData()" style="background:rgba(220,53,69,0.3);margin-right:8px;">Limpiar datos</button><button class="logout-btn" onclick="adminLogout()">Salir</button>
   </div>
   <div class="admin-tabs">
     <button class="admin-tab active" onclick="showAdminTab('resumen')">Resumen</button>
