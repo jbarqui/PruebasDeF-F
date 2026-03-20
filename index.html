@@ -714,10 +714,54 @@ function collectData() {
 
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyBlRPrxGIUgi-L5B4xU1nyvLBzldcbD3ZhvL2_txWz6rtF-EXOH_PxnMAsYE1KDIQ21w/exec';
 
+async function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve({
+      name: file.name,
+      type: file.type,
+      data: reader.result.split(',')[1]
+    });
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function uploadFiles(nombre) {
+  const fileInputs = document.querySelectorAll('input[type="file"]');
+  const allFiles = [];
+  fileInputs.forEach(input => {
+    Array.from(input.files).forEach(f => allFiles.push(f));
+  });
+  if (!allFiles.length) return [];
+
+  try {
+    const encoded = await Promise.all(allFiles.map(fileToBase64));
+    const resp = await fetch(SHEETS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre: nombre, files: encoded })
+    });
+    const result = await resp.json();
+    return result.links || [];
+  } catch(e) {
+    console.warn('Error uploading files:', e);
+    return [];
+  }
+}
+
 async function submitForm() {
+  // Show sending state
+  document.querySelector('.btn-submit').textContent = 'Enviando...';
+  document.querySelector('.btn-submit').disabled = true;
+
   const data = collectData();
-  
-  // Show thanks immediately, send in background
+
+  // Upload files first
+  const links = await uploadFiles(data.nombre || 'voluntario');
+  if (links.length) data.archivos = links.join(' | ');
+
+  // Show thanks
   showView('view-thanks');
   document.getElementById('progress-fill').style.width = '100%';
   document.getElementById('progress-label').textContent = '✓ Enviado';
@@ -726,7 +770,7 @@ async function submitForm() {
   // Save locally as backup
   await saveResponse(data);
 
-  // Send to Google Sheets via URL params (avoids CORS)
+  // Send to Google Sheets
   try {
     const params = encodeURIComponent(JSON.stringify(data));
     const img = new Image();
