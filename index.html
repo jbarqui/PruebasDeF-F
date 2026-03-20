@@ -727,6 +727,48 @@ async function fileToBase64(file) {
   });
 }
 
+async function submitForm() {
+  document.querySelector('.btn-submit').textContent = 'Enviando...';
+  document.querySelector('.btn-submit').disabled = true;
+
+  const data = collectData();
+
+  // Collect files
+  const fileInputs = document.querySelectorAll('input[type="file"]');
+  const allFiles = [];
+  fileInputs.forEach(input => {
+    Array.from(input.files).forEach(f => allFiles.push(f));
+  });
+
+  // Encode files and include in data
+  if (allFiles.length) {
+    try {
+      const encoded = await Promise.all(allFiles.map(fileToBase64));
+      data.archivos_b64 = JSON.stringify(encoded);
+    } catch(e) {
+      console.warn('Error encoding files:', e);
+    }
+  }
+
+  // Show thanks
+  showView('view-thanks');
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('progress-label').textContent = '✓ Enviado';
+  document.getElementById('section-nav').style.display = 'none';
+
+  // Save locally
+  await saveResponse(data);
+
+  // Send to Google Sheets via GET (no CORS issues)
+  try {
+    const params = encodeURIComponent(JSON.stringify(data));
+    const img = new Image();
+    img.src = SHEETS_URL + '?data=' + params;
+  } catch(e) {
+    console.warn('Error sending to Sheets:', e);
+  }
+}
+
 async function uploadFiles(nombre) {
   const fileInputs = document.querySelectorAll('input[type="file"]');
   const allFiles = [];
@@ -737,12 +779,10 @@ async function uploadFiles(nombre) {
 
   try {
     const encoded = await Promise.all(allFiles.map(fileToBase64));
-    const resp = await fetch(SHEETS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre: nombre, files: encoded })
-    });
-    const result = await resp.json();
+    const payload = encodeURIComponent(JSON.stringify({ nombre: nombre, files: encoded }));
+    const resp = await fetch(SHEETS_URL + '?upload=' + payload);
+    const text = await resp.text();
+    const result = JSON.parse(text);
     return result.links || [];
   } catch(e) {
     console.warn('Error uploading files:', e);
