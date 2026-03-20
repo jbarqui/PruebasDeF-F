@@ -728,96 +728,68 @@ async function fileToBase64(file) {
 }
 
 async function submitForm() {
-  document.querySelector('.btn-submit').textContent = 'Enviando...';
-  document.querySelector('.btn-submit').disabled = true;
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
 
   const data = collectData();
 
-  // Collect files
+  // 1. Collect files
   const fileInputs = document.querySelectorAll('input[type="file"]');
   const allFiles = [];
   fileInputs.forEach(input => {
-    Array.from(input.files).forEach(f => allFiles.push(f));
+    Array.from(input.files).forEach(f => allFiles.push({ field: input.id, file: f }));
   });
 
-  // Encode files and include in data
+  // 2. Upload files via POST (no CORS issues with doPost)
+  let driveLinks = [];
   if (allFiles.length) {
     try {
-      const encoded = await Promise.all(allFiles.map(fileToBase64));
-      data.archivos_b64 = JSON.stringify(encoded);
+      btn.textContent = 'Subiendo archivos...';
+      const encoded = await Promise.all(allFiles.map(({ field, file }) =>
+        fileToBase64(file).then(b64 => ({ field, ...b64 }))
+      ));
+      const resp = await fetch(SHEETS_URL, {
+        method: 'POST',
+        body: JSON.stringify({ type: 'upload', nombre: data.nombre || 'voluntario', files: encoded })
+      });
+      const result = await resp.json();
+      if (result.links) {
+        driveLinks = result.links;
+        data.archivos = driveLinks.map(l => l.name + ': ' + l.url).join('\n');
+      }
     } catch(e) {
-      console.warn('Error encoding files:', e);
+      console.warn('Error al subir archivos:', e);
+      // Fallback: save files locally if upload fails
+      try {
+        const encoded = await Promise.all(allFiles.map(({ field, file }) =>
+          fileToBase64(file).then(b64 => ({ field, ...b64 }))
+        ));
+        data.archivos_local = encoded;
+        data.archivos = '(guardados localmente — subida falló)';
+      } catch(e2) { console.warn(e2); }
     }
   }
 
-  // Show thanks
+  // 3. Save locally as backup
+  await saveResponse(data);
+
+  // 4. Send form data to Google Sheets via GET (lightweight, no files)
+  try {
+    const sheetData = { ...data };
+    delete sheetData.archivos_local; // never send base64 over GET
+    const params = encodeURIComponent(JSON.stringify(sheetData));
+    const img = new Image();
+    img.src = SHEETS_URL + '?data=' + params;
+  } catch(e) {
+    console.warn('Error al enviar a Sheets:', e);
+  }
+
+  // 5. Show thank you
   showView('view-thanks');
   document.getElementById('progress-fill').style.width = '100%';
   document.getElementById('progress-label').textContent = '✓ Enviado';
   document.getElementById('section-nav').style.display = 'none';
-
-  // Save locally
-  await saveResponse(data);
-
-  // Send to Google Sheets via GET (no CORS issues)
-  try {
-    const params = encodeURIComponent(JSON.stringify(data));
-    const img = new Image();
-    img.src = SHEETS_URL + '?data=' + params;
-  } catch(e) {
-    console.warn('Error sending to Sheets:', e);
-  }
-}
-
-async function uploadFiles(nombre) {
-  const fileInputs = document.querySelectorAll('input[type="file"]');
-  const allFiles = [];
-  fileInputs.forEach(input => {
-    Array.from(input.files).forEach(f => allFiles.push(f));
-  });
-  if (!allFiles.length) return [];
-
-  try {
-    const encoded = await Promise.all(allFiles.map(fileToBase64));
-    const payload = encodeURIComponent(JSON.stringify({ nombre: nombre, files: encoded }));
-    const resp = await fetch(SHEETS_URL + '?upload=' + payload);
-    const text = await resp.text();
-    const result = JSON.parse(text);
-    return result.links || [];
-  } catch(e) {
-    console.warn('Error uploading files:', e);
-    return [];
-  }
-}
-
-async function submitForm() {
-  // Show sending state
-  document.querySelector('.btn-submit').textContent = 'Enviando...';
-  document.querySelector('.btn-submit').disabled = true;
-
-  const data = collectData();
-
-  // Upload files first
-  const links = await uploadFiles(data.nombre || 'voluntario');
-  if (links.length) data.archivos = links.join(' | ');
-
-  // Show thanks
-  showView('view-thanks');
-  document.getElementById('progress-fill').style.width = '100%';
-  document.getElementById('progress-label').textContent = '✓ Enviado';
-  document.getElementById('section-nav').style.display = 'none';
-
-  // Save locally as backup
-  await saveResponse(data);
-
-  // Send to Google Sheets
-  try {
-    const params = encodeURIComponent(JSON.stringify(data));
-    const img = new Image();
-    img.src = SHEETS_URL + '?data=' + params;
-  } catch(e) {
-    console.warn('Error sending to Sheets:', e);
-  }
 }
 
 // ── VIEWS ──
@@ -909,7 +881,8 @@ function renderTable() {
   tbody.innerHTML = '';
   allResponses.forEach((r, i) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${allResponses.length - i}</td><td>${r.fecha||'—'}</td><td>${r.nombre||'—'}</td><td><span class="ver-badge">${r.version||'—'}</span></td><td>${r.marca||'—'}</td><td>${r.modelo||'—'}</td><td>${r.experiencia||'—'}</td><td>${r.c5||'—'}/5</td><td>${r.c1||'—'}</td><td>${r.c2||'—'}</td>`;
+    const archCount = (r.archivos && r.archivos.length) ? `<span style="color:var(--blue);font-size:11px;margin-left:4px;">📎${r.archivos.length}</span>` : '';
+    tr.innerHTML = `<td>${allResponses.length - i}</td><td>${r.fecha||'—'}</td><td>${r.nombre||'—'}${archCount}</td><td><span class="ver-badge">${r.version||'—'}</span></td><td>${r.marca||'—'}</td><td>${r.modelo||'—'}</td><td>${r.experiencia||'—'}</td><td>${r.c5||'—'}/5</td><td>${r.c1||'—'}</td><td>${r.c2||'—'}</td>`;
     tr.onclick = () => openModal(r, allResponses.length - i);
     tbody.appendChild(tr);
   });
@@ -962,6 +935,31 @@ function openModal(r, num) {
       html += `<div class="modal-row"><div class="modal-q">${label}</div><div class="modal-a">${val}</div></div>`;
     }
   });
+  // Show attached files if any
+  if (r.archivos && r.archivos.length) {
+    html += `<div class="modal-section-head">📎 Archivos adjuntos</div>`;
+    r.archivos.forEach(f => {
+      const isVideo = f.type && f.type.startsWith('video');
+      const isImage = f.type && f.type.startsWith('image');
+      const dataUrl = `data:${f.type};base64,${f.data}`;
+      if (isImage) {
+        html += `<div class="modal-row" style="flex-direction:column;align-items:flex-start;gap:8px;">
+          <div class="modal-q">${f.field||''} · ${f.name}</div>
+          <img src="${dataUrl}" style="max-width:100%;max-height:300px;border-radius:8px;border:1px solid var(--border);">
+          <a href="${dataUrl}" download="${f.name}" style="font-size:12px;color:var(--blue);">⬇ Descargar</a>
+        </div>`;
+      } else if (isVideo) {
+        html += `<div class="modal-row" style="flex-direction:column;align-items:flex-start;gap:8px;">
+          <div class="modal-q">${f.field||''} · ${f.name}</div>
+          <video src="${dataUrl}" controls style="max-width:100%;max-height:300px;border-radius:8px;border:1px solid var(--border);"></video>
+          <a href="${dataUrl}" download="${f.name}" style="font-size:12px;color:var(--blue);">⬇ Descargar</a>
+        </div>`;
+      } else {
+        html += `<div class="modal-row"><div class="modal-q">${f.name}</div><div class="modal-a"><a href="${dataUrl}" download="${f.name}" style="color:var(--blue);">⬇ Descargar</a></div></div>`;
+      }
+    });
+  }
+
   document.getElementById('modal-body').innerHTML = html;
   document.getElementById('modal-overlay').classList.add('open');
 }
