@@ -90,6 +90,8 @@ textarea { min-height: 80px; }
 .btn-next:hover { background: #004A8F; }
 .btn-submit { background: var(--green); color: white; }
 .btn-submit:hover { background: #1B5E20; }
+.btn-clear { background: var(--white); border: 1.5px solid #FFCDD2; color: #C62828; font-size: 13px; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+.btn-clear:hover { background: #FFF5F5; border-color: #C62828; }
 
 /* THANK YOU */
 .thankyou { max-width: 500px; margin: 60px auto; text-align: center; padding: 0 24px; }
@@ -219,7 +221,7 @@ textarea { min-height: 80px; }
   <div class="question"><label>Marca del dispositivo <span class="req">*</span><span class="hint">Ej: Samsung, Motorola, Xiaomi...</span></label><input type="text" id="q-marca" placeholder="Ej: Samsung"></div>
   <div class="question"><label>Modelo del dispositivo <span class="req">*</span><span class="hint">Ej: Galaxy A54, Moto G84...</span></label><input type="text" id="q-modelo" placeholder="Ej: Galaxy A54"></div>
   <div class="question"><label>Versión de la app que estás probando <span class="req">*</span><span class="hint">Encontrala en Ajustes o el pie de la app. Ej: 3.6</span></label><input type="text" id="q-version" placeholder="Ej: 3.6"></div>
-  <div class="nav-row"><div></div><button class="btn btn-next" onclick="goTo(1)">Siguiente →</button></div>
+  <div class="nav-row"><button class="btn-clear" onclick="clearSection('sec-0')">↺ Limpiar sección</button><button class="btn btn-next" onclick="goTo(1)">Siguiente →</button></div>
 </div>
 
 <!-- SEC 1 -->
@@ -262,7 +264,7 @@ textarea { min-height: 80px; }
   </div>
 
 
-<div class="nav-row"><button class="btn btn-back" onclick="goTo(0)">« Atrás</button><button class="btn btn-next" onclick="goTo(2)">Siguiente »</button></div>
+<div class="nav-row"><button class="btn btn-back" onclick="goTo(0)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-1')">↺ Limpiar</button><button class="btn btn-next" onclick="goTo(2)">Siguiente →</button></div>
 </div>
 
 <!-- SEC 2 -->
@@ -351,7 +353,7 @@ textarea { min-height: 80px; }
     </div>
   </div>
 
-  <div class="nav-row"><button class="btn btn-back" onclick="goTo(1)">← Atrás</button><button class="btn btn-next" onclick="goTo(3)">Siguiente →</button></div>
+  <div class="nav-row"><button class="btn btn-back" onclick="goTo(1)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-2')">↺ Limpiar</button><button class="btn btn-next" onclick="goTo(3)">Siguiente →</button></div>
 </div>
 
 <!-- SEC 3 -->
@@ -426,7 +428,7 @@ textarea { min-height: 80px; }
     </div>
   </div>
 
-  <div class="nav-row"><button class="btn btn-back" onclick="goTo(2)">← Atrás</button><button class="btn btn-next" onclick="goTo(4)">Siguiente →</button></div>
+  <div class="nav-row"><button class="btn btn-back" onclick="goTo(2)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-3')">↺ Limpiar</button><button class="btn btn-next" onclick="goTo(4)">Siguiente →</button></div>
 </div>
 
 <!-- SEC 4 -->
@@ -482,7 +484,7 @@ textarea { min-height: 80px; }
     </div>
   </div>
 
-  <div class="nav-row"><button class="btn btn-back" onclick="goTo(3)">← Atrás</button><button class="btn btn-next" onclick="goTo(5)">Siguiente →</button></div>
+  <div class="nav-row"><button class="btn btn-back" onclick="goTo(3)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-4')">↺ Limpiar</button><button class="btn btn-next" onclick="goTo(5)">Siguiente →</button></div>
 </div>
 
 <!-- SEC 5 -->
@@ -528,7 +530,7 @@ textarea { min-height: 80px; }
     </div>
   </div>
 
-  <div class="nav-row"><button class="btn btn-back" onclick="goTo(4)">← Atrás</button><button class="btn btn-next" onclick="goTo(6)">Siguiente →</button></div>
+  <div class="nav-row"><button class="btn btn-back" onclick="goTo(4)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-5')">↺ Limpiar</button><button class="btn btn-next" onclick="goTo(6)">Siguiente →</button></div>
 </div>
 
 <!-- SEC 6 -->
@@ -553,7 +555,7 @@ textarea { min-height: 80px; }
       <input type="file" id="file-q-c6" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
     </div>
   </div>
-  <div class="nav-row"><button class="btn btn-back" onclick="goTo(5)">← Atrás</button><button class="btn btn-submit" onclick="submitForm()">Enviar respuestas ✓</button></div>
+  <div class="nav-row"><button class="btn btn-back" onclick="goTo(5)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-6')">↺ Limpiar</button><button class="btn btn-submit" onclick="submitForm()">Enviar respuestas ✓</button></div>
 </div>
 
 </main>
@@ -917,6 +919,23 @@ document.querySelectorAll('.required-dot').forEach(el => el.style.display = 'non
 
 // -- ADMIN ACCESS via URL hash --
 if (window.location.hash === '#admin') showView('view-admin-login');
+
+// ── CLEAR SECTION ──
+function clearSection(secId) {
+  const sec = document.getElementById(secId);
+  sec.querySelectorAll('input[type="radio"]').forEach(i => {
+    i.checked = false;
+    const opt = i.closest('.option-item');
+    if (opt) opt.classList.remove('selected');
+  });
+  sec.querySelectorAll('textarea, input[type="text"]').forEach(i => i.value = '');
+  sec.querySelectorAll('input[type="file"]').forEach(i => i.value = '');
+  sec.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+  sec.querySelectorAll('.scale-wrap').forEach(sw => {
+    const id = sw.id.replace('scale-', '');
+    delete scales[id];
+  });
+}
 </script>
 </body>
 </html>
