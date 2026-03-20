@@ -713,6 +713,8 @@ function collectData() {
 }
 
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyBlRPrxGIUgi-L5B4xU1nyvLBzldcbD3ZhvL2_txWz6rtF-EXOH_PxnMAsYE1KDIQ21w/exec';
+const CLOUDINARY_CLOUD = 'dsmzqpmwb';
+const CLOUDINARY_PRESET = 'PruebaFF'; // unsigned preset
 
 async function fileToBase64(file) {
   return new Promise((resolve, reject) => {
@@ -725,6 +727,18 @@ async function fileToBase64(file) {
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
+}
+
+async function uploadToCloudinary(file, nombre) {
+  const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/auto/upload`;
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CLOUDINARY_PRESET);
+  fd.append('folder', 'sube_testing/' + (nombre || 'voluntario').replace(/\s+/g, '_'));
+  const resp = await fetch(url, { method: 'POST', body: fd });
+  const result = await resp.json();
+  if (result.secure_url) return result.secure_url;
+  throw new Error(result.error?.message || 'Upload failed');
 }
 
 async function submitForm() {
@@ -741,44 +755,28 @@ async function submitForm() {
     Array.from(input.files).forEach(f => allFiles.push({ field: input.id, file: f }));
   });
 
-  // 2. Upload files via POST (no CORS issues with doPost)
-  let driveLinks = [];
+  // 2. Upload files to Cloudinary (CORS abierto, sin restricciones)
   if (allFiles.length) {
-    try {
-      btn.textContent = 'Subiendo archivos...';
-      const encoded = await Promise.all(allFiles.map(({ field, file }) =>
-        fileToBase64(file).then(b64 => ({ field, ...b64 }))
-      ));
-      const resp = await fetch(SHEETS_URL, {
-        method: 'POST',
-        body: JSON.stringify({ type: 'upload', nombre: data.nombre || 'voluntario', files: encoded })
-      });
-      const result = await resp.json();
-      if (result.links) {
-        driveLinks = result.links;
-        data.archivos = driveLinks.map(l => l.name + ': ' + l.url).join('\n');
-      }
-    } catch(e) {
-      console.warn('Error al subir archivos:', e);
-      // Fallback: save files locally if upload fails
+    btn.textContent = 'Subiendo archivos...';
+    const links = [];
+    for (const { field, file } of allFiles) {
       try {
-        const encoded = await Promise.all(allFiles.map(({ field, file }) =>
-          fileToBase64(file).then(b64 => ({ field, ...b64 }))
-        ));
-        data.archivos_local = encoded;
-        data.archivos = '(guardados localmente — subida falló)';
-      } catch(e2) { console.warn(e2); }
+        const url = await uploadToCloudinary(file, data.nombre);
+        links.push(file.name + ': ' + url);
+      } catch(e) {
+        console.warn('Error subiendo ' + file.name + ':', e);
+        links.push(file.name + ': (error al subir)');
+      }
     }
+    data.archivos = links.join('\n');
   }
 
   // 3. Save locally as backup
   await saveResponse(data);
 
-  // 4. Send form data to Google Sheets via GET (lightweight, no files)
+  // 4. Send to Google Sheets
   try {
-    const sheetData = { ...data };
-    delete sheetData.archivos_local; // never send base64 over GET
-    const params = encodeURIComponent(JSON.stringify(sheetData));
+    const params = encodeURIComponent(JSON.stringify(data));
     const img = new Image();
     img.src = SHEETS_URL + '?data=' + params;
   } catch(e) {
