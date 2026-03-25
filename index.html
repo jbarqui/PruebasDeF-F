@@ -221,7 +221,7 @@ textarea { min-height: 80px; }
   <div class="question"><label>Marca del dispositivo <span class="req">*</span><span class="hint">Ej: Samsung, Motorola, Xiaomi...</span></label><input type="text" id="q-marca" placeholder="Ej: Samsung"></div>
   <div class="question"><label>Modelo del dispositivo <span class="req">*</span><span class="hint">Ej: Galaxy A54, Moto G84...</span></label><input type="text" id="q-modelo" placeholder="Ej: Galaxy A54"></div>
   <div class="question"><label>Versión de la app que estás probando <span class="req">*</span><span class="hint">Encontrala en Ajustes o el pie de la app. Ej: 3.6</span></label><input type="text" id="q-version" placeholder="Ej: 3.6"></div>
-  <div class="nav-row"><button class="btn-clear" onclick="clearSection('sec-0')">↺ Limpiar sección</button><button class="btn btn-next" onclick="goTo(1)">Siguiente →</button></div>
+  <div class="nav-row"><button class="btn-clear" onclick="clearSection('sec-0')">↺ Limpiar</button><button class="btn btn-next btn-send-section" onclick="submitSection(0, 1)">Enviar y continuar →</button></div>
 </div>
 
 <!-- SEC 1 -->
@@ -264,7 +264,7 @@ textarea { min-height: 80px; }
   </div>
 
 
-<div class="nav-row"><button class="btn btn-back" onclick="goTo(0)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-1')">↺ Limpiar</button><button class="btn btn-next" onclick="goTo(2)">Siguiente →</button></div>
+<div class="nav-row"><button class="btn btn-back" onclick="goTo(0)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-1')">↺ Limpiar</button><button class="btn btn-next btn-send-section" onclick="submitSection(1, 2)">Enviar y continuar →</button></div>
 </div>
 
 <!-- SEC 2 -->
@@ -351,7 +351,7 @@ textarea { min-height: 80px; }
     </div>
   </div>
 
-  <div class="nav-row"><button class="btn btn-back" onclick="goTo(1)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-2')">↺ Limpiar</button><button class="btn btn-next" onclick="goTo(3)">Siguiente →</button></div>
+  <div class="nav-row"><button class="btn btn-back" onclick="goTo(1)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-2')">↺ Limpiar</button><button class="btn btn-next btn-send-section" onclick="submitSection(2, 3)">Enviar y continuar →</button></div>
 </div>
 
 <div class="form-section" id="sec-3">
@@ -425,7 +425,7 @@ textarea { min-height: 80px; }
     </div>
   </div>
 
-  <div class="nav-row"><button class="btn btn-back" onclick="goTo(2)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-3')">↺ Limpiar</button><button class="btn btn-next" onclick="goTo(4)">Siguiente →</button></div>
+  <div class="nav-row"><button class="btn btn-back" onclick="goTo(2)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-3')">↺ Limpiar</button><button class="btn btn-next btn-send-section" onclick="submitSection(3, 4)">Enviar y continuar →</button></div>
 </div>
 
 <!-- SEC 4 -->
@@ -481,7 +481,7 @@ textarea { min-height: 80px; }
     </div>
   </div>
 
-  <div class="nav-row"><button class="btn btn-back" onclick="goTo(3)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-4')">↺ Limpiar</button><button class="btn btn-next" onclick="goTo(5)">Siguiente →</button></div>
+  <div class="nav-row"><button class="btn btn-back" onclick="goTo(3)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-4')">↺ Limpiar</button><button class="btn btn-next btn-send-section" onclick="submitSection(4, 5)">Enviar y continuar →</button></div>
 </div>
 
 <!-- SEC 5 -->
@@ -527,7 +527,7 @@ textarea { min-height: 80px; }
     </div>
   </div>
 
-  <div class="nav-row"><button class="btn btn-back" onclick="goTo(4)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-5')">↺ Limpiar</button><button class="btn btn-next" onclick="goTo(6)">Siguiente →</button></div>
+  <div class="nav-row"><button class="btn btn-back" onclick="goTo(4)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-5')">↺ Limpiar</button><button class="btn btn-next btn-send-section" onclick="submitSection(5, 6)">Enviar y continuar →</button></div>
 </div>
 
 <!-- SEC 6 -->
@@ -552,7 +552,7 @@ textarea { min-height: 80px; }
       <input type="file" id="file-q-c6" accept="image/*,video/*" multiple style="font-size:13px;color:var(--muted);">
     </div>
   </div>
-  <div class="nav-row"><button class="btn btn-back" onclick="goTo(5)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-6')">↺ Limpiar</button><button class="btn btn-submit" onclick="submitForm()">Enviar respuestas ✓</button></div>
+  <div class="nav-row"><button class="btn btn-back" onclick="goTo(5)">← Atrás</button><button class="btn-clear" onclick="clearSection('sec-6')">↺ Limpiar</button><button class="btn btn-submit btn-send-section" onclick="submitSection(6, null)">Enviar respuestas ✓</button></div>
 </div>
 
 </main>
@@ -622,12 +622,52 @@ textarea { min-height: 80px; }
 
 <script>
 const ADMIN_PASS = 'sube2024';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyBlRPrxGIUgi-L5B4xU1nyvLBzldcbD3ZhvL2_txWz6rtF-EXOH_PxnMAsYE1KDIQ21w/exec';
+const CLOUDINARY_CLOUD = 'dsmzqpmwb';
+const CLOUDINARY_PRESET = 'PruebaFF';
+
 let currentSection = 0;
 const totalSections = 7;
 const scales = {};
 let allResponses = [];
 
-// ── STORAGE ──
+// ── DATOS PERSISTENTES (precarga nombre/dispositivo) ──────────
+const PERSIST_KEY = 'sube_datos_voluntario';
+
+function savePersistentData() {
+  try {
+    localStorage.setItem(PERSIST_KEY, JSON.stringify({
+      nombre: getText('q-nombre'),
+      marca: getText('q-marca'),
+      modelo: getText('q-modelo'),
+      version: getText('q-version'),
+      frecuencia: getRadio('frecuencia'),
+      experiencia: getRadio('experiencia'),
+    }));
+  } catch(e) {}
+}
+
+function loadPersistentData() {
+  try {
+    const saved = localStorage.getItem(PERSIST_KEY);
+    if (!saved) return;
+    const d = JSON.parse(saved);
+    if (d.nombre) document.getElementById('q-nombre').value = d.nombre;
+    if (d.marca) document.getElementById('q-marca').value = d.marca;
+    if (d.modelo) document.getElementById('q-modelo').value = d.modelo;
+    if (d.version) document.getElementById('q-version').value = d.version;
+    if (d.frecuencia) {
+      const r = document.querySelector(`input[name="frecuencia"][value="${d.frecuencia}"]`);
+      if (r) { r.checked = true; r.closest('.option-item').classList.add('selected'); }
+    }
+    if (d.experiencia) {
+      const r = document.querySelector(`input[name="experiencia"][value="${d.experiencia}"]`);
+      if (r) { r.checked = true; r.closest('.option-item').classList.add('selected'); }
+    }
+  } catch(e) {}
+}
+
+// ── STORAGE ──────────────────────────────────────────────────
 async function saveResponse(data) {
   try {
     const id = 'resp:' + Date.now() + ':' + Math.random().toString(36).slice(2,7);
@@ -653,7 +693,7 @@ async function loadAllResponses() {
   } catch(e) { return []; }
 }
 
-// ── FORM ──
+// ── FORM NAV ─────────────────────────────────────────────────
 function goTo(n) {
   document.getElementById('sec-' + currentSection).classList.remove('active');
   document.querySelectorAll('.section-nav button').forEach((b,i) => {
@@ -680,55 +720,56 @@ function getRadio(name) { const e = document.querySelector('input[name="'+name+'
 function getText(id) { const e = document.getElementById(id); return e ? (e.value.trim()||'') : ''; }
 function getScale(id) { return scales[id] || ''; }
 
-function collectData() {
-  return {
-    timestamp: Date.now(),
-    fecha: new Date().toLocaleString('es-AR'),
-    nombre: getText('q-nombre'),
-    frecuencia: getRadio('frecuencia'),
-    experiencia: getRadio('experiencia'),
-    marca: getText('q-marca'),
-    modelo: getText('q-modelo'),
-    version: getText('q-version'),
+// ── COLLECT DATA POR SECCIÓN ──────────────────────────────────
+const sectionKeys = {
+  0: () => ({
+    nombre: getText('q-nombre'), frecuencia: getRadio('frecuencia'),
+    experiencia: getRadio('experiencia'), marca: getText('q-marca'),
+    modelo: getText('q-modelo'), version: getText('q-version'),
+  }),
+  1: () => ({
     m1a: getRadio('m1a'), m1b: getScale('m1b'), m1c: getText('q-m1c'),
     m2a: getRadio('m2a'), m2b: getText('q-m2b'),
     m3a: getRadio('m3a'), m3b: getScale('m3b'), m3c: getText('q-m3c'),
+  }),
+  2: () => ({
     v1a: getRadio('v1a'), v1b: getRadio('v1b'), v1c: getText('q-v1c'),
     v2a: getRadio('v2a'), v2b: getRadio('v2b'),
     v3a: getScale('v3a'), v3b: getText('q-v3b'),
     v4a: getRadio('v4a'),
+  }),
+  3: () => ({
     b1a: getRadio('b1a'), b1b: getRadio('b1b'),
     b2a: getRadio('b2a'),
     b3a: getRadio('b3a'), b3b: getRadio('b3b'),
     b4a: getRadio('b4a'), b4b: getText('q-b4b'),
     b5a: getScale('b5a'), b5b: getText('q-b5b'),
+  }),
+  4: () => ({
     p1a: getRadio('p1a'), p1b: getRadio('p1b'), p1c: getText('q-p1c'),
     p2a: getRadio('p2a'), p2b: getRadio('p2b'),
     p3a: getRadio('p3a'),
+  }),
+  5: () => ({
     mo1a: getRadio('mo1a'), mo1b: getRadio('mo1b'), mo1c: getText('q-mo1c'),
     mo2a: getRadio('mo2a'), mo2b: getText('q-mo2b'),
+  }),
+  6: () => ({
     c1: getText('q-c1'), c2: getText('q-c2'), c3: getText('q-c3'),
     c4: getText('q-c4'), c5: getScale('c5'), c6: getText('q-c6'),
-  };
+  }),
+};
+
+const sectionNames = {
+  0: 'Datos', 1: 'Mapa', 2: 'Viaje', 3: 'Billetera',
+  4: 'Pagar', 5: 'MODO', 6: 'Cierre'
+};
+
+function getVolunteerName() {
+  return getText('q-nombre') || localStorage.getItem('sube_nombre_temp') || 'voluntario';
 }
 
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyBlRPrxGIUgi-L5B4xU1nyvLBzldcbD3ZhvL2_txWz6rtF-EXOH_PxnMAsYE1KDIQ21w/exec';
-const CLOUDINARY_CLOUD = 'dsmzqpmwb';
-const CLOUDINARY_PRESET = 'PruebaFF'; // unsigned preset
-
-async function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve({
-      name: file.name,
-      type: file.type,
-      data: reader.result.split(',')[1]
-    });
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
+// ── CLOUDINARY UPLOAD ─────────────────────────────────────────
 async function uploadToCloudinary(file, nombre) {
   const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/auto/upload`;
   const fd = new FormData();
@@ -741,53 +782,83 @@ async function uploadToCloudinary(file, nombre) {
   throw new Error(result.error?.message || 'Upload failed');
 }
 
-async function submitForm() {
-  const btn = document.querySelector('.btn-submit');
-  btn.textContent = 'Enviando...';
+// ── SEND SECTION TO SHEETS ────────────────────────────────────
+function sendToSheets(data) {
+  try {
+    const params = encodeURIComponent(JSON.stringify(data));
+    const img = new Image();
+    img.src = SHEETS_URL + '?data=' + params;
+  } catch(e) { console.warn('Error al enviar a Sheets:', e); }
+}
+
+// ── SUBMIT SECTION ────────────────────────────────────────────
+async function submitSection(secNum, nextSec) {
+  const btn = document.querySelector(`#sec-${secNum} .btn-send-section`);
+  const originalText = btn.textContent;
   btn.disabled = true;
 
-  const data = collectData();
+  // Collect section data + identity
+  const nombre = getVolunteerName();
+  if (secNum === 0) {
+    savePersistentData();
+    localStorage.setItem('sube_nombre_temp', getText('q-nombre'));
+  }
 
-  // 1. Collect files
-  const fileInputs = document.querySelectorAll('input[type="file"]');
+  const secData = sectionKeys[secNum]();
+  const data = {
+    timestamp: Date.now(),
+    fecha: new Date().toLocaleString('es-AR'),
+    nombre: nombre,
+    seccion: sectionNames[secNum],
+    ...secData,
+  };
+
+  // Upload files from this section
+  const secEl = document.getElementById('sec-' + secNum);
+  const fileInputs = secEl.querySelectorAll('input[type="file"]');
   const allFiles = [];
-  fileInputs.forEach(input => {
-    Array.from(input.files).forEach(f => allFiles.push({ field: input.id, file: f }));
-  });
+  fileInputs.forEach(input => Array.from(input.files).forEach(f => allFiles.push(f)));
 
-  // 2. Upload files to Cloudinary (CORS abierto, sin restricciones)
   if (allFiles.length) {
     btn.textContent = 'Subiendo archivos...';
     const links = [];
-    for (const { field, file } of allFiles) {
+    for (const file of allFiles) {
       try {
-        const url = await uploadToCloudinary(file, data.nombre);
+        const url = await uploadToCloudinary(file, nombre);
         links.push(file.name + ': ' + url);
       } catch(e) {
-        console.warn('Error subiendo ' + file.name + ':', e);
+        console.warn('Error subiendo ' + file.name, e);
         links.push(file.name + ': (error al subir)');
       }
     }
     data.archivos = links.join('\n');
   }
 
-  // 3. Save locally as backup
+  btn.textContent = 'Enviando...';
+
+  // Save locally + send to Sheets
   await saveResponse(data);
+  sendToSheets(data);
 
-  // 4. Send to Google Sheets
-  try {
-    const params = encodeURIComponent(JSON.stringify(data));
-    const img = new Image();
-    img.src = SHEETS_URL + '?data=' + params;
-  } catch(e) {
-    console.warn('Error al enviar a Sheets:', e);
-  }
+  // Visual feedback on button
+  btn.textContent = '✓ Enviado';
+  btn.style.background = 'var(--green)';
 
-  // 5. Show thank you
-  showView('view-thanks');
-  document.getElementById('progress-fill').style.width = '100%';
-  document.getElementById('progress-label').textContent = '✓ Enviado';
-  document.getElementById('section-nav').style.display = 'none';
+  // Navigate to next section after brief pause
+  setTimeout(() => {
+    if (nextSec !== null) {
+      goTo(nextSec);
+      btn.textContent = originalText;
+      btn.style.background = '';
+      btn.disabled = false;
+    } else {
+      // Last section — show thank you
+      showView('view-thanks');
+      document.getElementById('progress-fill').style.width = '100%';
+      document.getElementById('progress-label').textContent = '✓ Enviado';
+      document.getElementById('section-nav').style.display = 'none';
+    }
+  }, 800);
 }
 
 // ── VIEWS ──
@@ -875,12 +946,12 @@ function renderResumen() {
 function renderTable() {
   const thead = document.querySelector('#resp-table thead');
   const tbody = document.querySelector('#resp-table tbody');
-  thead.innerHTML = '<tr><th>#</th><th>Fecha</th><th>Nombre</th><th>Versión</th><th>Marca</th><th>Modelo</th><th>Experiencia</th><th>Puntuación</th><th>Funcionalidad más fácil</th><th>Funcionalidad más difícil</th></tr>';
+  thead.innerHTML = '<tr><th>#</th><th>Fecha</th><th>Nombre</th><th>Sección</th><th>Versión</th><th>Marca</th><th>Modelo</th><th>Experiencia</th><th>Puntuación</th><th>Más fácil</th><th>Más difícil</th></tr>';
   tbody.innerHTML = '';
   allResponses.forEach((r, i) => {
     const tr = document.createElement('tr');
-    const archCount = (r.archivos && r.archivos.length) ? `<span style="color:var(--blue);font-size:11px;margin-left:4px;">📎${r.archivos.length}</span>` : '';
-    tr.innerHTML = `<td>${allResponses.length - i}</td><td>${r.fecha||'—'}</td><td>${r.nombre||'—'}${archCount}</td><td><span class="ver-badge">${r.version||'—'}</span></td><td>${r.marca||'—'}</td><td>${r.modelo||'—'}</td><td>${r.experiencia||'—'}</td><td>${r.c5||'—'}/5</td><td>${r.c1||'—'}</td><td>${r.c2||'—'}</td>`;
+    const archCount = (r.archivos && r.archivos.length) ? `<span style="color:var(--blue);font-size:11px;margin-left:4px;">📎</span>` : '';
+    tr.innerHTML = `<td>${allResponses.length - i}</td><td>${r.fecha||'—'}</td><td>${r.nombre||'—'}${archCount}</td><td><span class="ver-badge" style="background:#F3F0FF;color:#4527A0">${r.seccion||'—'}</span></td><td><span class="ver-badge">${r.version||'—'}</span></td><td>${r.marca||'—'}</td><td>${r.modelo||'—'}</td><td>${r.experiencia||'—'}</td><td>${r.c5||'—'}</td><td>${r.c1||'—'}</td><td>${r.c2||'—'}</td>`;
     tr.onclick = () => openModal(r, allResponses.length - i);
     tbody.appendChild(tr);
   });
@@ -933,31 +1004,6 @@ function openModal(r, num) {
       html += `<div class="modal-row"><div class="modal-q">${label}</div><div class="modal-a">${val}</div></div>`;
     }
   });
-  // Show attached files if any
-  if (r.archivos && r.archivos.length) {
-    html += `<div class="modal-section-head">📎 Archivos adjuntos</div>`;
-    r.archivos.forEach(f => {
-      const isVideo = f.type && f.type.startsWith('video');
-      const isImage = f.type && f.type.startsWith('image');
-      const dataUrl = `data:${f.type};base64,${f.data}`;
-      if (isImage) {
-        html += `<div class="modal-row" style="flex-direction:column;align-items:flex-start;gap:8px;">
-          <div class="modal-q">${f.field||''} · ${f.name}</div>
-          <img src="${dataUrl}" style="max-width:100%;max-height:300px;border-radius:8px;border:1px solid var(--border);">
-          <a href="${dataUrl}" download="${f.name}" style="font-size:12px;color:var(--blue);">⬇ Descargar</a>
-        </div>`;
-      } else if (isVideo) {
-        html += `<div class="modal-row" style="flex-direction:column;align-items:flex-start;gap:8px;">
-          <div class="modal-q">${f.field||''} · ${f.name}</div>
-          <video src="${dataUrl}" controls style="max-width:100%;max-height:300px;border-radius:8px;border:1px solid var(--border);"></video>
-          <a href="${dataUrl}" download="${f.name}" style="font-size:12px;color:var(--blue);">⬇ Descargar</a>
-        </div>`;
-      } else {
-        html += `<div class="modal-row"><div class="modal-q">${f.name}</div><div class="modal-a"><a href="${dataUrl}" download="${f.name}" style="color:var(--blue);">⬇ Descargar</a></div></div>`;
-      }
-    });
-  }
-
   document.getElementById('modal-body').innerHTML = html;
   document.getElementById('modal-overlay').classList.add('open');
 }
@@ -996,6 +1042,9 @@ document.querySelectorAll('.required-dot').forEach(el => el.style.display = 'non
 
 // -- ADMIN ACCESS via URL hash --
 if (window.location.hash === '#admin') showView('view-admin-login');
+
+// -- PRECARGAR DATOS DEL VOLUNTARIO --
+loadPersistentData();
 
 // ── CLEAR SECTION ──
 function clearSection(secId) {
