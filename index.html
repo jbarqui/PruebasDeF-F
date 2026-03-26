@@ -789,12 +789,14 @@ async function uploadToCloudinary(file, nombre) {
 // ── SEND SECTION TO SHEETS ────────────────────────────────────
 async function sendToSheets(data) {
   try {
-    const resp = await fetch(SHEETS_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(data),
+    // Eliminar campos vacíos para reducir el tamaño de la URL
+    const compact = {};
+    Object.entries(data).forEach(([k, v]) => {
+      if (v !== '' && v !== undefined && v !== null) compact[k] = v;
     });
+    const params = encodeURIComponent(JSON.stringify(compact));
+    const url = SHEETS_URL + '?data=' + params;
+    await fetch(url, { method: 'GET', mode: 'no-cors' });
     console.log('✅ Enviado a Sheets');
     return true;
   } catch(e) {
