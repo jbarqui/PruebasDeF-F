@@ -787,12 +787,20 @@ async function uploadToCloudinary(file, nombre) {
 }
 
 // ── SEND SECTION TO SHEETS ────────────────────────────────────
-function sendToSheets(data) {
+async function sendToSheets(data) {
   try {
-    const params = encodeURIComponent(JSON.stringify(data));
-    const img = new Image();
-    img.src = SHEETS_URL + '?data=' + params;
-  } catch(e) { console.warn('Error al enviar a Sheets:', e); }
+    const resp = await fetch(SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(data),
+    });
+    console.log('✅ Enviado a Sheets');
+    return true;
+  } catch(e) {
+    console.warn('⚠️ Error al enviar a Sheets, queda en localStorage:', e);
+    return false;
+  }
 }
 
 // ── SUBMIT SECTION ────────────────────────────────────────────
@@ -839,7 +847,7 @@ async function submitSection(secNum, _unused) {
 
   btn.textContent = 'Enviando...';
   await saveResponse(data);
-  sendToSheets(data);
+  const sent = await sendToSheets(data);
 
   // Si es la última sección mostramos gracias, sino solo confirmamos
   if (secNum === 6) {
